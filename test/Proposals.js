@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js');
 
 const Token = artifacts.require('BurnableTokenStub');
-const TimedVote = artifacts.require('TimedVoteStub');
+const TimedVote = artifacts.require('Proposals');
 const Database = artifacts.require('Database');
 const Events = artifacts.require('Events');
 const ContractManager = artifacts.require('ContractManager');
@@ -30,7 +30,7 @@ const validAddress = '0xbaCc40C0Df5E6eC2B0A4e9d1A0F748473F7f8b1a';
 const proposalID = '0x0011223344556677889900112233445566778899001122334455667788990011';
 
 
-let token, timedVote, db, ev, cm, api, platformFunds, platformAssetID;
+let token, timedVote, db, ev, cm, api, platformFunds, platformAssetID, governedToken;
 
 
 async function throws (executor) {
@@ -58,7 +58,7 @@ function increaseTime (seconds) {
   });
 }
 
-contract('TimedVote', () => {
+contract('Proposals', () => {
   // ----
   // Hook
   // ----
@@ -74,13 +74,20 @@ contract('TimedVote', () => {
     platformAssetID = await api.getPlatformAssetID();
     token = await Token.new("MyBit", tokenSupply);
     await platformFunds.setPlatformToken(token.address);
-    timedVote = await TimedVote.new(
-      db.address,
-      voteDuration,
-      quorum,
-      threshold
-    );
+    timedVote = await TimedVote.new(db.address);
     await cm.addContract("TimedVote", timedVote.address);
+  });
+
+  it("Initiate token governance", async() => {
+    console.log(token.address);
+    console.log(voteDuration);
+    console.log(quorum);
+    console.log(threshold);
+    let tx = await timedVote.startGovernance(token.address, voteDuration, quorum, threshold);
+    assert.equal(await api.tokenGoverned(token.address), true);
+    assert.equal(await api.tokenVoteDuration(token.address), voteDuration);
+    assert.equal(await api.tokenQuorum(token.address), quorum);
+    assert.equal(await api.tokenThreshold(token.address), threshold);
   });
 
 
