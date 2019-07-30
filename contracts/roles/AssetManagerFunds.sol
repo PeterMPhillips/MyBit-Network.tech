@@ -60,6 +60,7 @@ contract AssetManagerFunds {
       require(fundingToken.balanceOf(address(this)).sub(amountOwed) == balanceBefore);
       fundingToken.transfer(msg.sender, amountOwed);
     }
+    events.transaction('Asset manager income withdrawn', _assetAddress, msg.sender, amountOwed, token.getERC20());
     return true;
   }
 

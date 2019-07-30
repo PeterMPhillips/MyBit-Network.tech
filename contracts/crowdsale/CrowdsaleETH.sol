@@ -5,7 +5,10 @@ import "../interfaces/ERC20.sol";
 import "../interfaces/MinterInterface.sol";
 import "../interfaces/CrowdsaleReserveInterface.sol";
 
-interface Events {  function transaction(string _message, address _from, address _to, uint _amount, address _token)  external; }
+interface Events {
+  function transaction(string _message, address _from, address _to, uint _amount, address _token)  external;
+  function asset(string _message, string _uri, address _assetAddress, address _manager);
+}
 interface DB {
   function addressStorage(bytes32 _key) external view returns (address);
   function uintStorage(bytes32 _key) external view returns (uint);
@@ -66,6 +69,7 @@ contract CrowdsaleETH {
         reserve.receiveETH.value(fundingRemaining)(msg.sender);
         //Return leftover WEI after cost of tokens calculated and subtracted from msg.value to msg.sender
         msg.sender.transfer(msg.value.sub(fundingRemaining));
+        events.asset('Crowdsale finalized', '', _assetAddress, msg.sender);
       }
       events.transaction('Asset purchased', address(this), msg.sender, amount, _assetAddress);
 

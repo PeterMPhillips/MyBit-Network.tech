@@ -94,7 +94,15 @@ contract Operators {
   returns (bool) {
     database.deleteAddress(keccak256(abi.encodePacked("model.operator", _modelID)));
     database.deleteString(keccak256(abi.encodePacked('model.ipfs', _modelID)));
-    events.operator('Asset added', _modelID, '', '', msg.sender);
+    events.operator('Asset removed', _modelID, '', '', msg.sender);
+  }
+
+  function updateModelIPFS(bytes32 _modelID, string _ipfs)
+  external
+  onlyOperator(_modelID)
+  returns(bool){
+    database.setString(keccak256(abi.encodePacked("model.ipfs", _modelID)), _ipfs);
+    events.operator('Model ipfs', _modelID, '', _ipfs, msg.sender);
   }
 
   // @notice operator can choose which ERC20 tokens he's willing to accept as payment
@@ -140,21 +148,10 @@ contract Operators {
     _;
   }
 
-  // @notice Sender must be the operator address for this operatorID or modelID
+  // @notice Sender must be the operator address for this operatorID or modelID or owner of the contracts (this is required to allow an operator to make changes through the DAO app)
   modifier onlyOperator(bytes32 _id) {
-    require(database.addressStorage(keccak256(abi.encodePacked("operator", _id))) == msg.sender || database.addressStorage(keccak256(abi.encodePacked("model.operator", _id))) == msg.sender);
+    require(database.addressStorage(keccak256(abi.encodePacked("operator", _id))) == msg.sender || database.addressStorage(keccak256(abi.encodePacked("model.operator", _id))) == msg.sender || database.boolStorage(keccak256(abi.encodePacked("owner", msg.sender))));
     _;
   }
-
-
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //                                                Events                                                                        //
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /*
-  event LogOperatorRegistered(bytes32 indexed _operatorID, string _operatorURI);
-  event LogOperatorRemoved(bytes32 indexed _operatorID, address _owner);
-  event LogOperatorAddressChanged(bytes32 indexed _operatorID, address _oldAddress, address _newAddress);
-  event LogOperatorAcceptsToken(bytes32 indexed _operatorID, address _tokenAddress);
-  */
 
 }

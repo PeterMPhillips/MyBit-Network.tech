@@ -81,6 +81,13 @@ contract API {
     return fundingTokenAddress;
   }
 
+  function getAssetIPFS(address _assetAddress)
+  public
+  view
+  returns(string) {
+    return database.stringStorage(keccak256(abi.encodePacked("asset.ipfs", _assetAddress)));
+  }
+
   // IF we decide not to store assetIncome
   // function getAssetIncome(address _assetAddress)
   // public
@@ -202,6 +209,20 @@ contract API {
   returns(bytes32) {
     bytes32 modelID = database.bytes32Storage(keccak256(abi.encodePacked("asset.modelID", _assetAddress)));
     return modelID;
+  }
+
+  function checkAssetAcceptToken(bytes32 _modelID, address _tokenAddress)
+  external
+  view
+  returns(bool) {
+    return database.boolStorage(keccak256(abi.encodePacked("model.acceptsToken", _modelID, _tokenAddress)));
+  }
+
+  function checkAssetPayoutToken(bytes32 _modelID, address _tokenAddress)
+  external
+  view
+  returns(bool) {
+    return database.boolStorage(keccak256(abi.encodePacked("model.payoutToken", _modelID, _tokenAddress)));
   }
 
   function getAssetOperator(address _assetAddress)

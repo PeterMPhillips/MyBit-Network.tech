@@ -7,7 +7,10 @@ import "../interfaces/KyberInterface.sol";
 import "../interfaces/MinterInterface.sol";
 import "../interfaces/CrowdsaleReserveInterface.sol";
 
-interface Events {  function transaction(string _message, address _from, address _to, uint _amount, address _token)  external; }
+interface Events {
+  function transaction(string _message, address _from, address _to, uint _amount, address _token)  external;
+  function asset(string _message, string _uri, address _assetAddress, address _manager);
+}
 interface DB {
   function addressStorage(bytes32 _key) external view returns (address);
   function uintStorage(bytes32 _key) external view returns (uint);
@@ -80,6 +83,7 @@ contract CrowdsaleERC20{
       database.deleteUint(keccak256(abi.encodePacked("crowdsale.remaining", _assetAddress)));
       require(minter.mintAssetTokens(_assetAddress, msg.sender, amount), "Investor minting failed");   // Send remaining asset tokens to investor
       require(fundingToken.transfer(address(reserve), fundingRemaining));
+      events.asset('Crowdsale finalized', '', _assetAddress, msg.sender);
       if(collected > fundingRemaining){
         require(fundingToken.transfer(msg.sender, collected.sub(fundingRemaining)));    // return extra funds
       }
