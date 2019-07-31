@@ -217,6 +217,30 @@
                 "type": "bytes32"
             },
             {
+                "name": "_ipfs",
+                "type": "string"
+            }
+        ],
+        "name": "updateModelIPFS",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function",
+        "signature": "0x603d456a"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_modelID",
+                "type": "bytes32"
+            },
+            {
                 "name": "_tokenAddress",
                 "type": "address"
             },

@@ -143,6 +143,26 @@
                 "type": "address"
             }
         ],
+        "name": "getAssetIPFS",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "0x6c08a983"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_assetAddress",
+                "type": "address"
+            }
+        ],
         "name": "getAssetROI",
         "outputs": [
             {
@@ -418,6 +438,54 @@
         "stateMutability": "view",
         "type": "function",
         "signature": "0xe097ec0a"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_modelID",
+                "type": "bytes32"
+            },
+            {
+                "name": "_tokenAddress",
+                "type": "address"
+            }
+        ],
+        "name": "checkAssetAcceptToken",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "0x660c91cb"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_modelID",
+                "type": "bytes32"
+            },
+            {
+                "name": "_tokenAddress",
+                "type": "address"
+            }
+        ],
+        "name": "checkAssetPayoutToken",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function",
+        "signature": "0xc8271b95"
     },
     {
         "constant": true,
