@@ -78,13 +78,14 @@ contract Operators {
   external
   onlyOperator(_operatorID)
   returns (bool) {
+    address operator = database.addressStorage(keccak256(abi.encodePacked("operator", _operatorID)));
     bytes32 modelID = keccak256(abi.encodePacked('model.id', _operatorID, _name));
     require(database.addressStorage(keccak256(abi.encodePacked("model.operator", modelID))) == address(0));
-    database.setAddress(keccak256(abi.encodePacked("model.operator", modelID)), msg.sender);
+    database.setAddress(keccak256(abi.encodePacked("model.operator", modelID)), operator);
     database.setString(keccak256(abi.encodePacked('model.ipfs', modelID)), _ipfs);
     acceptToken(modelID, _token, _acceptCrypto);
     payoutToken(modelID, _token, _payoutCrypto);
-    events.operator('Asset added', modelID, _name, _ipfs, msg.sender);
+    events.operator('Asset added', modelID, _name, _ipfs, operator);
     return true;
   }
 
@@ -103,6 +104,14 @@ contract Operators {
   returns(bool){
     database.setString(keccak256(abi.encodePacked("model.ipfs", _modelID)), _ipfs);
     events.operator('Model ipfs', _modelID, '', _ipfs, msg.sender);
+  }
+
+  function updateModelOperator(bytes32 _modelID, address _newAddress)
+  external
+  onlyOperator(_modelID)
+  returns(bool){
+    database.setAddress(keccak256(abi.encodePacked("model.operator", _modelID)), _newAddress);
+    events.operator('Model operator', _modelID, '', '', _newAddress);
   }
 
   // @notice operator can choose which ERC20 tokens he's willing to accept as payment

@@ -109,7 +109,7 @@ truffle migrate --network ropsten
 
 **Platform** 0x9C05dc7c7f6332CBc16Ce1e196Ff6928f3fCe5bF
 
-**Operators** 0xbb5f2b6e2bc6ffda7d325c8db66381ac5d2588bf
+**Operators** 0xeC841C878435Ba4f28BF305a00C1483dB0D96A20
 
 **Minter** 0x1405Ca0c8A3b5196A6A3365E971BfD9A8AdA500C
 

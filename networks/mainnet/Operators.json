@@ -230,6 +230,29 @@
         "type": "bytes32"
       },
       {
+        "name": "_newAddress",
+        "type": "address"
+      }
+    ],
+    "name": "updateModelOperator",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_modelID",
+        "type": "bytes32"
+      },
+      {
         "name": "_tokenAddress",
         "type": "address"
       },
